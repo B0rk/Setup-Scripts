@@ -162,6 +162,13 @@ sudo mkdir -p /opt/adaptix_c2
 sudo mv "${INSTALL_DIR}" /opt/adaptix_c2
 success "Framework moved to /opt/adaptix_c2."
 
+OWNER="${SUDO_USER:-$USER}"
+
+sudo chown -R "${OWNER}:${OWNER}" /opt/adaptix_c2/Adaptix_C2_Framework
+# Give the owner read/write/execute as appropriate, remove group/other write/execute
+sudo chmod -R u+rwX,go-rX    /opt/adaptix_c2/Adaptix_C2_Framework
+success "Ownership changed to ${OWNER}, permissions set accordingly."
+
 clear
 echo -e "${GREEN}✔ All files and folder structure have been created.${NC}"
 echo -e "${YELLOW}Everything needed to use Adaptix Framework is in: '/opt/adaptix_c2'${NC}"
