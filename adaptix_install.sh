@@ -163,9 +163,9 @@ success "Framework moved to /opt/adaptix_c2."
 
 OWNER="${SUDO_USER:-$USER}"
 
-sudo chown -R "${OWNER}:${OWNER}" /opt/adaptix_c2/Adaptix_C2_Framework
+sudo chown -R "${OWNER}:${OWNER}" /opt/adaptix_c2
 # Give the owner read/write/execute as appropriate, remove group/other write/execute
-sudo chmod -R u+rwX,go-rX    /opt/adaptix_c2/Adaptix_C2_Framework
+sudo chmod -R u+rwX,go-rX    /opt/adaptix_c2
 success "Ownership changed to ${OWNER}, permissions set accordingly."
 
 clear
