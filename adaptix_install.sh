@@ -158,7 +158,6 @@ build_extensions
 cleanup
 
 info "Moving the completed framework to /opt/adaptix_c2..."
-sudo mkdir -p /opt/adaptix_c2
 sudo mv "${INSTALL_DIR}" /opt/adaptix_c2
 success "Framework moved to /opt/adaptix_c2."
 
