@@ -157,8 +157,13 @@ build_extensions
 
 cleanup
 
+info "Moving the completed framework to /opt/adaptix_c2..."
+sudo mkdir -p /opt/adaptix_c2
+sudo mv "${INSTALL_DIR}" /opt/adaptix_c2
+success "Framework moved to /opt/adaptix_c2."
+
 clear
 echo -e "${GREEN}✔ All files and folder structure have been created.${NC}"
-echo -e "${YELLOW}Everything needed to use Adaptix Framework is in: ${INSTALL_DIR}${NC}"
+echo -e "${YELLOW}Everything needed to use Adaptix Framework is in: '/opt/adaptix_c2'${NC}"
 echo -e "${YELLOW}Please modify 'profile.json' in that folder to set up your server profile.${NC}"
 echo -e "${GREEN}Documentation:${NC} https://adaptix-framework.gitbook.io/adaptix-framework"
