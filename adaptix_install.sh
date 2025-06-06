@@ -103,8 +103,6 @@ ensure_cmake() {
 }
 
 # ─── Prerequisites ──────────────────────────────────────────────────────────────
-
-# ─── Prerequisites ──────────────────────────────────────────────────────────────
 command -v apt &> /dev/null || failure "apt not found; this script requires Debian/Ubuntu"
 
 info "Updating package lists and installing dependencies..."
@@ -155,9 +153,9 @@ generate_certs() {
 
 install_adaptix() {
   info "Installing AdaptixC2 framework to ${INSTALL_DIR}..."
-  cp -R "/tmp/AdaptixC2/dist" "${INSTALL_DIR}"
-  mv "${INSTALL_DIR}/dist/AdaptixClient" "${INSTALL_DIR}/adaptix-client"
-  mv "${INSTALL_DIR}/dist/adaptixserver" "${INSTALL_DIR}/adaptix-server"
+  cp -R "/tmp/AdaptixC2/dist/*" "${INSTALL_DIR}"
+  mv "${INSTALL_DIR}/AdaptixClient" "${INSTALL_DIR}/adaptix-client"
+  mv "${INSTALL_DIR}/adaptixserver" "${INSTALL_DIR}/adaptix-server"
   success "AdaptixC2 installed."
 }
 
