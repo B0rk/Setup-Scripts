@@ -44,15 +44,76 @@ info()    { echo -e "${YELLOW}[INFO]${NC} $*"; }
 success() { echo -e "${GREEN}[ OK ]${NC} $*"; }
 failure() { echo -e "${RED}[FAIL]${NC} $*"; exit 1; }
 
+# ─── CMake Upgrade Checker ─────────────────────────────────────────────
+
+ensure_cmake() {
+  local installed_version major minor patch current_number required_number new_version
+
+  # 1. Detect current CMake version (or default to "0.0.0" if missing)
+  if ! command -v cmake &> /dev/null; then
+    installed_version="0.0.0"
+  else
+    installed_version=$(cmake --version | head -n1 | awk '{print $3}')
+  fi
+
+  # 2. Convert "MAJOR.MINOR.PATCH" → integer for comparison
+  IFS='.' read -r major minor patch <<< "$installed_version"
+  current_number=$((10#${major} * 1000000 + 10#${minor} * 1000 + 10#${patch}))
+  required_number=$((10#3 * 1000000 + 10#29 * 1000 + 10#0))
+
+  # 3. If existing version < 3.29.0, uninstall apt-cmake and install via snap
+  if [ "$current_number" -lt "$required_number" ]; then
+    info "Detected CMake ${installed_version} (< 3.29). Upgrading via snap..."
+
+    # 3a. If an apt-installed cmake exists, remove it
+    if dpkg -l | grep -qi '^ii  cmake '; then
+      info "Removing older apt‐installed CMake package..."
+      sudo apt remove -y cmake
+      success "Removed apt CMake."
+    fi
+
+    # 3b. Ensure snapd is available
+    if ! command -v snap &> /dev/null; then
+      info "Installing snapd (required to get modern CMake)..."
+      sudo apt update
+      sudo apt install -y snapd
+      success "snapd installed."
+    fi
+
+    # 3c. Install the latest CMake from snap
+    info "Installing latest CMake via 'snap install cmake --classic'..."
+    sudo snap remove cmake        &> /dev/null || true
+    sudo snap install cmake --classic
+    success "Snap‐CMake install invoked."
+
+    # 3d. Ensure that /snap/bin is earlier in PATH, so `cmake` resolves correctly
+    export PATH="/snap/bin:$PATH"
+    new_version=$(cmake --version | head -n1 | awk '{print $3}')
+
+    # 3e. Compare new version
+    IFS='.' read -r major minor patch <<< "$new_version"
+    if [ $((10#${major} * 1000000 + 10#${minor} * 1000 + 10#${patch})) -lt "$required_number" ]; then
+      failure "CMake upgrade failed or version still < 3.29 (found ${new_version})."
+    fi
+
+    success "CMake upgraded to ${new_version} (≧ 3.29)."
+  else
+    info "CMake ${installed_version} is ≥ 3.29; no upgrade needed."
+  fi
+}
+
 # ─── Prerequisites ──────────────────────────────────────────────────────────────
 
-# Ensure script is run on a Debian-based system
+# ─── Prerequisites ──────────────────────────────────────────────────────────────
 command -v apt &> /dev/null || failure "apt not found; this script requires Debian/Ubuntu"
 
 info "Updating package lists and installing dependencies..."
 sudo apt update
 sudo apt install -y "${DEPS[@]}"
 success "Dependencies installed."
+
+# ─── Ensure we have CMake ≥ 3.29 before building AX-Support-Soft ───────────────
+ensure_cmake
 
 # ─── Workspace Preparation ───────────────────────────────────────────────────────
 
