@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Adaptix C2 all-in-one installer
-# Streamlined by [Your Name], [Date]
+# Streamlined by Kyle Hoehn, 06/06/2025
 #
 
 set -euo pipefail
