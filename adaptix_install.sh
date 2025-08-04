@@ -32,7 +32,7 @@ EXT_DIRS=(
 )
 
 # Server and beacon certificate subjects
-SERVER_SUBJ="/C=US/ST=New York/L=New York/O=Netrio/OU=Offensive Security/CN=Netrio/emailAddress=noreply@netrio.com"
+SERVER_SUBJ="/C=US/ST=New York/L=New York/O=Hacker/OU=Offensive Security/CN=Hacker/emailAddress=noreply@hacker.com"
 BEACON_SUBJ="/C=US/ST=Washington/L=Redmond/O=Microsoft Corporation/OU=Windows Update Services/CN=MSDN/emailAddress=noreply@microsoft.com"
 
 # ─── Logging Helpers ────────────────────────────────────────────────────────────
