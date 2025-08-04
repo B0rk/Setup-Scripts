@@ -15,7 +15,6 @@ INSTALL_DIR="$HOME/Adaptix_C2_Framework"
 # Repositories to clone
 declare -A REPOS=(
   ["AdaptixC2"]="https://github.com/Adaptix-Framework/AdaptixC2.git"
-  ["AX-Support-Soft"]="https://github.com/Adaptix-Framework/AX-Support-Soft.git"
   ["Extension-Kit"]="https://github.com/Adaptix-Framework/Extension-Kit.git"
 )
 
@@ -159,18 +158,6 @@ install_adaptix() {
   success "AdaptixC2 installed."
 }
 
-build_support_tools() {
-  for sub in AXchecker CmdChecker; do
-    info "Building support tool: ${sub}..."
-    pushd "/tmp/AX-Support-Soft/${sub}" >/dev/null
-      mkdir -p Build && cd Build
-      cmake .. && make
-      cp "${sub}" "${INSTALL_DIR}/${sub}"
-    popd >/dev/null
-    success "Installed ${sub}."
-  done
-}
-
 build_extensions() {
   info "Building Extension-Kit modules..."
   pushd "/tmp/Extension-Kit" >/dev/null
@@ -196,21 +183,20 @@ build_extensions() {
 
 cleanup() {
   info "Cleaning up temporary repositories..."
-  rm -rf /tmp/AdaptixC2 /tmp/AX-Support-Soft /tmp/Extension-Kit
+  rm -rf /tmp/AdaptixC2 /tmp/Extension-Kit
   success "Cleanup complete."
 }
 
 # ─── Main Execution ─────────────────────────────────────────────────────────────
 
 clone_repo "AdaptixC2"     "${REPOS[AdaptixC2]}"
-clone_repo "AX-Support-Soft" "${REPOS[AX-Support-Soft]}"
 clone_repo "Extension-Kit"  "${REPOS[Extension-Kit]}"
 
 build_adaptix
 generate_certs
 install_adaptix
 
-build_support_tools
+
 build_extensions
 
 cleanup
