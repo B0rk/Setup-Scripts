@@ -20,8 +20,7 @@ declare -A REPOS=(
 
 # Dependencies (all in one apt step)
 DEPS=(
-  golang-1.24 mingw-w64 make libxkbcommon-dev cmake libssl-dev
-  qt6-base-dev qt6-websockets-dev
+  golang-1.24 mingw-w64 make libxkbcommon-dev cmake libssl-dev qt6-base-dev qt6-websockets-dev gcc g++ build-essential libssl-dev qt6-declarative-dev
 )
 
 # Extensions subdirectories to build under Extension-Kit
